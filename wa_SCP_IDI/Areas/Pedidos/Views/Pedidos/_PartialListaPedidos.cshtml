@@ -1,0 +1,44 @@
+﻿@model List<Pedido>
+
+@if (Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable_info">
+                <thead>
+                    <tr role="row">
+                        <th hidden="hidden" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-sort="ascending" aria-label="Doc Entry: activate to sort column descending">Doc Entry</th>
+                        <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Doc Num: activate to sort column ascending">Doc Num</th>
+                        <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Card Code: activate to sort column ascending">Card Code</th>
+                        <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Start date: activate to sort column ascending">Card Name</th>
+                        <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Salary: activate to sort column ascending">Doc Total</th>
+                        <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Doc Date: activate to sort column ascending">Doc Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Pedido in Model)
+                    {
+                    <tr>
+                        <td hidden="hidden" style="text-align:center">@Pedido.docEntry</td>
+                        <td style="text-align:center">@Pedido.docNum</td>
+                        <td style="text-align:center">@Pedido.cardCode</td>
+                        <td style="text-align:center">@Pedido.cardName</td>
+                        <td style="text-align:right">$ @Pedido.docTotal.ToString("N2")</td>
+                        <td style="text-align:center">@Pedido.docDate</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="espacio-boton-table"></div>
+}
+else
+{
+    <div style="text-align:center;">
+        <br />
+        <h1>Cat&aacute;logo Vac&iacute;o</h1>
+        <br />
+        <br />
+    </div>
+}

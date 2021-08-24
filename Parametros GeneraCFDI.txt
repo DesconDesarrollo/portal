@@ -1,0 +1,4 @@
+sucursal = Convert.ToInt32(args[0].ToString());
+factura = Convert.ToInt32(args[1].ToString());
+tipoImpresion = Convert.ToInt32(args[2].ToString());
+enviarEmail = Convert.ToInt32(args[3].ToString());

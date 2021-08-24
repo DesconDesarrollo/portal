@@ -1,0 +1,61 @@
+﻿@model List<Cotizacion>
+
+@{
+    bool? pedido = AppHttpContext.Current.Session.GetBoolean("CraerPedido");
+}
+
+@if (Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="overflow-x:auto;" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="responsive-datatable_info">
+                    <thead>
+                        <tr role="row">
+                            <th style="text-align:center">Operaci&oacute;n</th>
+                            <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Doc Num: activate to sort column ascending">Card Name</th>
+                            <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Salary: activate to sort column ascending">Doc Num</th>
+                            <th style="text-align:center" class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" aria-label="Total: activate to sort column ascending">Total</th>
+                            <th hidden="hidden">docEntry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Cotizacion in Model)
+                        {
+                            <tr>
+                                <td style="text-align:center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary waves-effect width-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fe-menu"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuIconFlautas">
+                                            <a class="dropdown-item" asp-area="Cotizaciones" asp-controller="Cotizaciones" asp-action="CrearC" asp-route-DocEntry="@Cotizacion.DocEntry" asp-route-docNum="@Cotizacion.DocNum" style="cursor:pointer;">Ver detalle</a>
+                                            @if (pedido == true)
+                                            {
+                                                <a class="dropdown-item" asp-area="Pedidos" asp-controller="Pedidos" asp-action="CrearP" asp-route-DocEntry="@Cotizacion.DocEntry" style="cursor:pointer;">Generar pedido</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align:center">@Cotizacion.CardName</td>
+                                <td style="text-align:center">@Cotizacion.DocNum</td>
+                                <td style="text-align:right">$  @Cotizacion.DocTotal.ToString("N2")</td>
+                                <td hidden="hidden" style="text-align:right">@Cotizacion.DocEntry</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="espacio-boton-table"></div>
+}
+else
+{
+    <div style="text-align:center;">
+        <br />
+        <h1>Cat&aacute;logo Vac&iacute;o</h1>
+        <br />
+        <br />
+    </div>
+}

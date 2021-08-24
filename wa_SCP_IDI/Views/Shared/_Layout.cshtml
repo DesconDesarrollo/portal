@@ -1,0 +1,199 @@
+﻿﻿@{
+    var nombre = AppHttpContext.Current.Session.GetString("_slpName");
+    bool? pedido = AppHttpContext.Current.Session.GetBoolean("CraerPedido");
+}
+
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="utf-8" />
+    <title>IDI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+    <!-- App css -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/libs/select2/select2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet">
+    <!-- third party css -->
+    <link href="~/assets/js/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/libs/toastr/toastr.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="enlarged" data-keep-enlarged="true">
+
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <ul class="list-unstyled topnav-menu float-right mb-0">
+
+
+                <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+
+                        <span class="pro-user-name ml-1">
+                            <b> @nombre </b><i class="mdi mdi-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                        <a href="/Sesion/Logout" class="dropdown-item notify-item">
+                            <i class="zmdi zmdi-power m-r-10"></i> Cerrar Sesión
+                        </a>
+
+                    </div>
+                </li>
+            </ul>
+
+            <!-- LOGO -->
+            <div class="logo-box">
+                <a asp-area="Cotizaciones" asp-controller="Cotizaciones" asp-action="InicioC" class="logo text-center">
+                    <span class="logo-lg">
+                        <img src="~/assets/images/Logo_IDI_Nuevo.jpg" alt="" >
+                        <!-- <span class="logo-lg-text-light">Xeria</span> -->
+                    </span>
+                    <span class="logo-sm">
+                        <!-- <span class="logo-sm-text-dark">X</span> -->
+                        <img src="~/assets/images/Mini_Logo_IDI_Nuevo.jpg" alt="" >
+                    </span>
+                </a>
+            </div>
+
+            <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+                <li>
+                    <button class="button-menu-mobile disable-btn waves-effect">
+                        <i class="fe-menu"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+
+        <div class="left-side-menu">
+            <div class="slimscroll-menu">
+
+
+
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+
+                    <ul class="metismenu" id="side-menu">
+
+                        <li class="menu-title">Navigation</li>
+
+
+
+                        <li>
+                            <a asp-action="InicioC" asp-controller="Cotizaciones" asp-area="Cotizaciones">
+                                <i class="mdi mdi-file-document-outline"></i>
+                                <span> Cotizaciones </span>
+                            </a>
+                        </li>
+                        @if (pedido == true)
+                        {
+                            <li>
+                                <a asp-action="InicioP" asp-controller="Pedidos" asp-area="Pedidos">
+                                    <i class="mdi mdi-cube-send"></i>
+                                    <span> Pedidos </span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
+                <!-- End Sidebar -->
+
+                <div class="clearfix"></div>
+
+            </div>
+            <!-- Sidebar -left -->
+
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    @RenderBody()
+                    <!-- Form row -->
+                    @*<div class="row">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>*@
+                    <!-- end row -->
+
+                </div> <!-- container-fluid -->
+
+            </div> <!-- content -->
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            2019 &copy;  Derechos Reservados
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- end Footer -->
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+
+    </div>
+    <!-- END wrapper -->
+    <!-- Vendor js -->
+    <script src="~/assets/js/vendor.min.js"></script>
+    <!-- App js -->
+    <script src="~/assets/js/app.min.js"></script>
+    <script src="~/assets/js/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
+    <script src="~/assets/js/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/assets/js/libs/select2/select2.min.js"></script>
+    <script src="~/assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="~/assets/js/jquery.twbsPagination.min.js"></script>
+    <script src="~/assets/js/libs/toastr/toastr.min.js"></script>
+
+    <script src="~/assets/js/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/libs/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/assets/js/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/assets/js/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/assets/js/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/libs/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/assets/js/libs/datatables/buttons.html5.min.js"></script>
+    <script src="~/assets/js/libs/datatables/buttons.flash.min.js"></script>
+    <script src="~/assets/js/libs/datatables/buttons.print.min.js"></script>
+    <script src="~/assets/js/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/js/libs/datatables/dataTables.select.min.js"></script>
+
+
+    <script src="~/assets/js/libs/pages/datatables.init.js"></script>
+
+
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

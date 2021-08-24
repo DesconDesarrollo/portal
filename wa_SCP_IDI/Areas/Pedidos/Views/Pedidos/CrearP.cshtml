@@ -1,0 +1,536 @@
+﻿@model Cotizacion
+
+@{
+    ViewData["Title"] = "CrearP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+
+    <script src="~/assets/js/menuprincipal/pedidos/pedidos.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var select2 = $("#cmbArticuloCaptura").select2();
+            select2.data('select2').$selection.css('height', '37px');
+
+            var select2 = $("#cmbClienteCaptura").select2();
+            select2.data('select2').$selection.css('height', '37px');
+
+            var select2_2 = $("#cmbLugarEntregaCaptura").select2();
+            select2_2.data('select2').$selection.css('height', '37px');
+
+            $("#btnMostrarFoto").prop('disabled', true);
+
+            $('#FechaEntrega').datepicker({
+                autoclose: true,
+                format: "dd/mm/yyyy",
+                enableOnReadonly: true,
+                todayBtn: true,
+                language: "es",
+                clearBtn: true,
+                orientation: "bottom right",
+                todayHighlight: true
+            });
+
+            $('#txtFechaCaptura').datepicker({
+                autoclose: true,
+                format: "dd/mm/yyyy",
+                enableOnReadonly: true,
+                todayBtn: true,
+                language: "es",
+                clearBtn: true,
+                orientation: "bottom right",
+                todayHighlight: true
+            });
+
+            $("#cmbArticuloCaptura").change(function () {
+                var cardCode = $("#cmbClienteCaptura").val();
+                var selectedValue = $("#cmbArticuloCaptura option:selected").val();
+
+                if (cardCode != "") {
+
+                    if (selectedValue != "-") {
+                        Command: toastr["info"]("Buscando...", "Información")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "10000",
+                            "hideDuration": "1000",
+                            "timeOut": "6000",
+                            "extendedTimeOut": "3000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+
+
+                        $.ajax({
+                            url: "/Pedidos/Pedidos/Articulos",
+                            data: {
+                                cardCode
+                            },
+                            type: 'get',
+                        }).done(function (data, textStatus, jqXHR) {
+
+                            $.each(data.articulos, function (index, value) {
+
+                                if (value.itemCode == selectedValue) {
+
+                                    $("#txtPrecioCaptura").val(value.price);
+
+                                    if (value.foto != "Foto no disponible") {
+
+                                        $("#hddSRC").val("data:image/jpg;base64," + value.foto)
+                                        $("#btnMostrarFoto").prop('disabled', false);
+
+                                        toastr.clear();
+                                        Command: toastr["success"]("La datos se cargaron correctamente", "Pedidos")
+                                        toastr.options = {
+                                            "closeButton": false,
+                                            "debug": false,
+                                            "newestOnTop": false,
+                                            "progressBar": false,
+                                            "positionClass": "toast-top-right",
+                                            "preventDuplicates": false,
+                                            "onclick": null,
+                                            "showDuration": "5000",
+                                            "hideDuration": "1000",
+                                            "timeOut": "6000",
+                                            "extendedTimeOut": "1000",
+                                            "showEasing": "swing",
+                                            "hideEasing": "linear",
+                                            "showMethod": "fadeIn",
+                                            "hideMethod": "fadeOut"
+                                        }
+
+                                    }
+                                    else {
+
+                                        $("#hddSRC").val("")
+                                        $("#btnMostrarFoto").prop('disabled', true);
+                                        toastr.clear();
+                                        Command: toastr["info"]("El artículo no cuenta con imagen", "Artículo")
+                                        toastr.options = {
+                                            "closeButton": false,
+                                            "debug": false,
+                                            "newestOnTop": false,
+                                            "progressBar": true,
+                                            "positionClass": "toast-top-right",
+                                            "preventDuplicates": false,
+                                            "onclick": null,
+                                            "showDuration": "5000",
+                                            "hideDuration": "1000",
+                                            "timeOut": "6000",
+                                            "extendedTimeOut": "3000",
+                                            "showEasing": "swing",
+                                            "hideEasing": "linear",
+                                            "showMethod": "fadeIn",
+                                            "hideMethod": "fadeOut"
+                                        }
+                                    }
+                                }
+                            });
+
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                        }).always(function (data, textStatus, errorThrown) {
+
+                        });
+                    }
+                    cardCode = "";
+                }
+                else {
+
+                    Command: toastr["info"]("No esta seleccionado ningun cliente", "Clientes")
+                     toastr.options = {
+                         "closeButton": false,
+                         "debug": false,
+                         "newestOnTop": false,
+                         "progressBar": true,
+                         "positionClass": "toast-top-right",
+                         "preventDuplicates": false,
+                         "onclick": null,
+                         "showDuration": "5000",
+                         "hideDuration": "1000",
+                         "timeOut": "6000",
+                         "extendedTimeOut": "3000",
+                         "showEasing": "swing",
+                         "hideEasing": "linear",
+                         "showMethod": "fadeIn",
+                         "hideMethod": "fadeOut"
+                    }
+                    cardCode = "";
+                }
+            });
+
+            $("#cmbClienteCaptura").change(function () {
+
+                var cardCode = $("#cmbClienteCaptura").val();
+
+                if (cardCode != "") {
+
+                    Command: toastr["info"]("Buscando...", "Información")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "10000",
+                        "hideDuration": "1000",
+                        "timeOut": "6000",
+                        "extendedTimeOut": "3000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+                    $.ajax({
+                        url: "/Pedidos/Pedidos/Articulos",
+                        data: {
+                            cardCode
+                        },
+                        type: 'get',
+                    }).done(function (data, textStatus, jqXHR) {
+
+                        $("#cmbArticuloCaptura").html("");
+
+                    $("#cmbArticuloCaptura").append('<option value="">Seleccione un artículo</option>');
+                    $("#cmbArticuloCaptura").val('')
+                    $("#cmbArticuloCaptura").trigger("change")
+
+                        $.each(data.articulos, function (index, value) {
+                            $("#cmbArticuloCaptura").append('<option value="' + value.itemCode + '">' + value.itemName + '</option>');
+                        });
+
+                        toastr.clear();
+                        Command: toastr["success"]("La datos de los artículos se cargaron correctamente", "Pedidos")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "3000",
+                            "hideDuration": "1000",
+                            "timeOut": "6000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    }).always(function (data, textStatus, errorThrown) {
+
+                    });
+
+                    $.ajax({
+                        url: "/Pedidos/Pedidos/Direcciones",
+                        data: {
+                            cardCode
+                        },
+                        type: 'get',
+                    }).done(function (data, textStatus, jqXHR) {
+
+                        $("#cmbLugarEntregaCaptura").html("");
+
+                    $("#cmbLugarEntregaCaptura").append('<option value="">Seleccione un lugar entrega</option>');
+                    $("#cmbLugarEntregaCaptura").val('')
+                    $("#cmbLugarEntregaCaptura").trigger("change")
+
+                        $.each(data.direcciones, function (index, value) {
+                            $("#cmbLugarEntregaCaptura").append('<option value="' + value.tipoDireccion + '">' + value.street + '</option>');
+                        });
+
+                        var tipoD = $("#hddTipoDirec").val();
+                        $("#cmbLugarEntregaCaptura").val(tipoD);
+                        $("#cmbLugarEntregaCaptura").trigger('change');
+
+                        Command: toastr["success"]("La datos los lugares de entrega se cargaron correctamente", "Pedidos")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "3000",
+                            "hideDuration": "1000",
+                            "timeOut": "4000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    }).always(function (data, textStatus, errorThrown) {
+
+                    });
+                }
+
+            });
+
+            if (@ViewBag.Cotizacion != null) {
+
+                CargaDetalle(@ViewBag.Cotizacion);
+
+            }
+
+            el('txtCantidadCaptura').addEventListener('input',function() {
+  var val = this.value;
+  this.value = val.replace(/\D|\-/,'');
+});
+
+        });
+
+
+        function MostrarFoto() {
+
+        var src = $("#hddSRC").val();
+
+            var imgmodal = document.getElementById("imagenp");
+                                imgmodal.setAttribute("src", src);
+
+                                $("#ModalFotoP").show();
+
+        }
+
+        function CierraModal() {
+
+        $('#ModalFotoP').hide();
+        $("#txtCantidadCaptura").focus();
+
+        }
+
+        function el(el) {
+  return document.getElementById(el);
+}
+
+
+    </script>
+}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <h3 class="page-title">NUEVO PEDIDO</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a asp-area="Pedidos" asp-controller="Pedidos" asp-action="InicioP">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Crear
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Panel de captura</h4>
+                        <form asp-area="Pedidos" asp-controller="Pedidos" asp-action="CrearP" class="form-sample">
+                            @Html.Hidden("hddSRC", "")
+                            @Html.Hidden("hddTipoDirec", "")
+                            @Html.Hidden("hddDocEntry", "")
+                            <div class="forms-sample">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="cmbClienteCaptura">Cliente</label>
+                                            @Html.DropDownList("Clientes", new SelectList((IEnumerable<Cliente>)ViewBag.Clientes, "cardCode", "cardName"), "Seleccione un Cliente", new { @id = "cmbClienteCaptura", @class = "form-control", @style = "width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="cmbLugarEntregaCaptura">Lugar de Entrega</label>
+                                            <select id="cmbLugarEntregaCaptura" name="lugarentrega" style="width:100%" class="form-control select2_basico">
+                                                <option selected="selected" value="-">Seleccione un lugar entrega</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" value="@DateTime.Now.Date" id="txtFechaCaptura">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            <!-- input-group -->
+                                        </div>
+                                        @*<div class="form-group">
+                                            <label for="txtFechaCaptura">Fecha</label>
+                                            <input type="text" disabled="disabled" class="form-control" name="fecha" id="txtFechaCaptura" value="@DateTime.Now">
+                                        </div>*@
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha Entrega</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="dd/mm/yyyy" id="FechaEntrega">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            <!-- input-group -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="cmbArticuloCaptura">Art&iacute;culos</label>
+                                            <select id="cmbArticuloCaptura" name="articulotrega" style="width:100%" class="form-control select2_basico">
+                                                <option selected="selected" value="-">Seleccione un artículo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtPrecioCaptura">Precio</label>
+                                            <input type="number" disabled="disabled" class="form-control" style="text-align:right" name="precioventa" id="txtPrecioCaptura" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtCantidadCaptura">Cantidad</label>
+                                            <input type="text" class="form-control" style="text-align:right" name="cantidadcaptura" id="txtCantidadCaptura" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button onclick="return MostrarFoto();" type="button" class="btn btn-primary waves-effect width-md" id="btnMostrarFoto">
+                                            <i class="mdi mdi-search-web btn-icon-prepend"></i>
+                                            Mostrar Imagen
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6" style="text-align:right">
+                                        <button onclick="return AgregarRegistroP();" type="button" class="btn btn-primary waves-effect width-md" id="btnAgregarRegistro">
+                                            <i class="mdi mdi-plus btn-icon-prepend"></i>
+                                            Agregar Registro
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="table-responsive">
+                                    <table class="table mb-0" id="detallepedido">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="text-align:center">Item</th>
+                                                <th style="text-align:center">Descripci&oacute;n</th>
+                                                <th style="text-align:center">Cantidad</th>
+                                                <th style="text-align:center">Precio</th>
+                                                <th style="text-align:center">Total Item</th>
+                                                <th style="text-align:center">Opción</th>
+                                                <th hidden="hidden">ItemCode</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tdDetalleP"></tbody>
+                                    </table>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-10">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtSubtotal" class="control-label mb-10">Subtotal:</label>
+                                            <input type="number" step="0.01" disabled="disabled" style="text-align:right" name="subtotal" class="form-control" maxlength="10" id="txtSubtotal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtImpuesto" hidden="hidden" class="control-label mb-10">Impuesto:</label>
+                                            <input type="number" step="0.01" hidden="hidden" disabled="disabled" style="text-align:right" name="impuesto" class="form-control" maxlength="10" id="txtImpuesto">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtTotal" hidden="hidden" class="control-label mb-10">Total:</label>
+                                            <input type="number" step="0.01" hidden="hidden" disabled="disabled" style="text-align:right" name="total" class="form-control" maxlength="10" id="txtTotal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row fa-pull-right">
+                                    <button onclick="return GenerarPedido();" type="button" class="btn btn-primary waves-effect width-md">
+                                        <i class="mdi mdi-plus btn-icon-prepend"></i>
+                                        Generar
+                                    </button>
+                                    &nbsp;
+                                    &nbsp;
+                                    <a asp-area="Pedidos" asp-controller="Pedidos" asp-action="InicioP" class="btn btn-danger waves-effect width-md">
+                                        <i class="mdi mdi-cancel btn-icon-prepend"></i>
+                                        Cancelar
+                                    </a>
+                                    &nbsp;
+                                    &nbsp;
+                                    <button onclick="return LimpiarFormulario();" type="button" class="btn btn-secondary waves-effect width-md">
+                                        <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                        Limpiar formulario
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        @*<partial name="_PartialPiePagina" />*@
+        <!-- partial -->
+    </div>
+</div>
+
+<div class="modal fade show" tabindex="-1" id="ModalFotoP" role="dialog" aria-labelledby="exampleModalScrollableTitle" style="display: none; padding-right: 17px;" aria-modal="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Imagen</h4>
+                <button type="button" class="close" onclick="CierraModal()" data-dismiss="modal" id="btnClose" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <img style="width:30em; height:40em;" id="imagenp" src="" />
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
